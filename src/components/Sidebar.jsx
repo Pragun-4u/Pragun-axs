@@ -48,7 +48,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="h-screen w-64 flex flex-col bg-white  shadow-sm">
+    <aside className="h-screen w-64 flex flex-col bg-white fixed  shadow-sm">
       <div className="p-4 pb-2 flex justify-between items-center">
         <span className="text-2xl font-bold text-indigo-800">Venus</span>
       </div>
