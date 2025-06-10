@@ -3,10 +3,11 @@ import "./index.css";
 import router from "./layout/Routes";
 import { AuthProvider } from "./context/AuthContext";
 import { Suspense } from "react";
+import Loader from "./components/Loader";
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>

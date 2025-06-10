@@ -1,30 +1,29 @@
-import React, { useState } from "react";
-import signupImg from "../assets/signup.jpg";
+import { useState } from "react";
 import {
   brandColor,
-  inputBaseClasses,
-  selectClasses,
   EyeIcon,
   EyeOffIcon,
-  InfoIcon,
-  ChevronDownIcon,
+  inputBaseClasses,
 } from "../constants/styleConstant";
+import signupImg from "/signup.jpg";
 
 import { Link } from "react-router";
+
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [rePasswordVisible, setRePasswordVisible] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
-      <div
-        className="hidden lg:block w-1/2 bg-cover bg-center relative h-screen"
-        style={{
-          backgroundImage: `url(${signupImg})`,
-        }}
-      ></div>
+      <div className="hidden lg:block w-1/2 bg-cover bg-center relative h-screen">
+        <img
+          loading="eager"
+          src={signupImg}
+          className="h-[100vh] w-full object-cover"
+          alt="Signup"
+        />
+      </div>
 
-      <div className="w-full h-screen overflow-auto lg:w-1/2 flex items-center justify-center py-12 px-6 sm:px-12 lg:px-16">
+      <div className="w-full h-[100vh] lg:w-1/2 flex items-center bg-gray-300/30 justify-center py-12 px-6 sm:px-12 lg:px-16">
         <div className="max-w-lg w-full h-full">
           <header className="mb-10 text-center lg:text-left">
             <h1 className="text-4xl font-serif" style={{ color: brandColor }}>
@@ -47,36 +46,25 @@ const Login = () => {
               <div>
                 <div className="relative">
                   <input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Password"
+                    type={"text"}
+                    placeholder="Username"
                     className={inputBaseClasses}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  >
-                    {passwordVisible ? (
-                      <EyeOffIcon className="w-5 h-5 cursor-pointer" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5 cursor-pointer" />
-                    )}
-                  </button>
                 </div>
               </div>
 
               <div className="relative">
                 <input
-                  type={rePasswordVisible ? "text" : "password"}
-                  placeholder="Re-enter password"
+                  type={"password"}
+                  placeholder="Enter password"
                   className={inputBaseClasses}
                 />
                 <button
                   type="button"
-                  onClick={() => setRePasswordVisible(!rePasswordVisible)}
+                  onClick={() => setPasswordVisible(!passwordVisible)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {rePasswordVisible ? (
+                  {passwordVisible ? (
                     <EyeOffIcon className="w-5 h-5 cursor-pointer" />
                   ) : (
                     <EyeIcon className="w-5 h-5 cursor-pointer" />
