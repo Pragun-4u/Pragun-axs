@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import signupImg from "../assets/signup.jpg";
+import signupImg from "/signup.jpg";
 import {
   brandColor,
   inputBaseClasses,
@@ -17,14 +17,16 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
-      <div
-        className="hidden lg:block w-1/2 bg-cover bg-center relative h-screen"
-        style={{
-          backgroundImage: `url(${signupImg})`,
-        }}
-      ></div>
+      <div className="hidden lg:block w-1/2 bg-cover bg-center relative h-screen">
+        <img
+          loading="eager"
+          src={signupImg}
+          className="h-[100vh] w-full object-cover"
+          alt="Signup"
+        />
+      </div>
 
-      <div className="w-full h-screen overflow-auto lg:w-1/2 flex items-center justify-center py-12 px-6 sm:px-12 lg:px-16">
+      <div className="w-full h-screen overflow-y-auto lg:w-1/2 flex bg-gray-300/30 items-center justify-center py-4 px-6 sm:px-12 lg:px-16 ">
         <div className="max-w-lg w-full h-full">
           <header className="mb-10 text-center lg:text-left">
             <h1 className="text-4xl font-serif" style={{ color: brandColor }}>
@@ -192,7 +194,7 @@ const SignUp = () => {
             </form>
           </main>
 
-          <footer className="mt-8 text-center text-sm text-gray-500">
+          <footer className="my-8 text-center text-sm pb-4 text-gray-500">
             <p>
               By creating account you agree to our{" "}
               <a
