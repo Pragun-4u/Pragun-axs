@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "../components/ProtectedRoute";
 const SignUp = lazy(() => import("../pages/SignUp"));
 const Login = lazy(() => import("../pages/Login"));
+const Home = lazy(() => import("../pages/Home"));
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -11,7 +12,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ProtectedRoute>
-        <>Home</>
+        <Home />
       </ProtectedRoute>
     ),
   },
