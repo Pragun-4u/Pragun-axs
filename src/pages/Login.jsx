@@ -11,7 +11,6 @@ import { Link } from "react-router";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [rePasswordVisible, setRePasswordVisible] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
@@ -47,36 +46,25 @@ const Login = () => {
               <div>
                 <div className="relative">
                   <input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Password"
+                    type={"text"}
+                    placeholder="Username"
                     className={inputBaseClasses}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  >
-                    {passwordVisible ? (
-                      <EyeOffIcon className="w-5 h-5 cursor-pointer" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5 cursor-pointer" />
-                    )}
-                  </button>
                 </div>
               </div>
 
               <div className="relative">
                 <input
-                  type={rePasswordVisible ? "text" : "password"}
-                  placeholder="Re-enter password"
+                  type={"password"}
+                  placeholder="Enter password"
                   className={inputBaseClasses}
                 />
                 <button
                   type="button"
-                  onClick={() => setRePasswordVisible(!rePasswordVisible)}
+                  onClick={() => setPasswordVisible(!passwordVisible)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {rePasswordVisible ? (
+                  {passwordVisible ? (
                     <EyeOffIcon className="w-5 h-5 cursor-pointer" />
                   ) : (
                     <EyeIcon className="w-5 h-5 cursor-pointer" />
