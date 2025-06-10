@@ -1,0 +1,223 @@
+import React, { useState } from "react";
+import { Link } from "react-router";
+import signupImg from "../assets/signup.jpg";
+import {
+  brandColor,
+  inputBaseClasses,
+  selectClasses,
+  EyeIcon,
+  EyeOffIcon,
+  InfoIcon,
+  ChevronDownIcon,
+} from "../constants/styleConstant";
+
+const SignUp = () => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [rePasswordVisible, setRePasswordVisible] = useState(false);
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex font-sans">
+      <div
+        className="hidden lg:block w-1/2 bg-cover bg-center relative h-screen"
+        style={{
+          backgroundImage: `url(${signupImg})`,
+        }}
+      ></div>
+
+      <div className="w-full h-screen overflow-auto lg:w-1/2 flex items-center justify-center py-12 px-6 sm:px-12 lg:px-16">
+        <div className="max-w-lg w-full h-full">
+          <header className="mb-10 text-center lg:text-left">
+            <h1 className="text-4xl font-serif" style={{ color: brandColor }}>
+              Welcome to <span className="font-bold">ABC</span>
+            </h1>
+            <p className="text-gray-500 mt-2">
+              Where Financial Wisdom Meets Technology
+            </p>
+          </header>
+
+          <main>
+            <h2
+              className="text-2xl font-bold mb-8 text-center lg:text-left"
+              style={{ color: brandColor }}
+            >
+              Sign up
+            </h2>
+
+            <form className="space-y-5">
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-5 sm:space-y-0">
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  className={`${inputBaseClasses} sm:w-1/2`}
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  className={`${inputBaseClasses} sm:w-1/2`}
+                />
+              </div>
+
+              <input
+                type="tel"
+                placeholder="Mobile Number"
+                className={inputBaseClasses}
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                className={inputBaseClasses}
+              />
+
+              <div className="relative">
+                <select defaultValue="" className={selectClasses}>
+                  <option value="" disabled>
+                    Nationality
+                  </option>
+                  <option value="usa">United States</option>
+                  <option value="can">Canada</option>
+                  <option value="uk">United Kingdom</option>
+                  <option value="india">India</option>
+                </select>
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+
+              <div className="relative">
+                <input
+                  type="date"
+                  placeholder="DD-MM-YYYY"
+                  className={inputBaseClasses}
+                />
+              </div>
+
+              <div className="relative">
+                <select defaultValue="" className={selectClasses}>
+                  <option value="" disabled>
+                    Gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none cursor-pointer" />
+              </div>
+
+              <div className="relative">
+                <select defaultValue="" className={selectClasses}>
+                  <option value="" disabled>
+                    Please select occupation
+                  </option>
+                  <option value="dev">Developer</option>
+                  <option value="des">Designer</option>
+                  <option value="pm">Project Manager</option>
+                </select>
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none cursor-pointer" />
+              </div>
+
+              <div className="relative">
+                <select defaultValue="" className={selectClasses}>
+                  <option value="" disabled>
+                    Please select years of experience
+                  </option>
+                  <option value="0-2">0-2 Years</option>
+                  <option value="3-5">3-5 Years</option>
+                  <option value="5+">5+ Years</option>
+                </select>
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none cursor-pointer" />
+              </div>
+
+              <input
+                type="url"
+                placeholder="Website (Optional)"
+                className={inputBaseClasses}
+              />
+
+              <div>
+                <div className="relative">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="Password"
+                    className={inputBaseClasses}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {passwordVisible ? (
+                      <EyeOffIcon className="w-5 h-5 cursor-pointer" />
+                    ) : (
+                      <EyeIcon className="w-5 h-5 cursor-pointer" />
+                    )}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2 flex items-center gap-2">
+                  <InfoIcon
+                    className="w-4 h-4 mr-2.5 cursor-pointer"
+                    style={{ color: brandColor }}
+                  />
+                  Between 8 and 20 characters, 1 upper case letter, 1 or more
+                  numbers, 1 or more special characters
+                </p>
+              </div>
+
+              <div className="relative">
+                <input
+                  type={rePasswordVisible ? "text" : "password"}
+                  placeholder="Re-enter password"
+                  className={inputBaseClasses}
+                />
+                <button
+                  type="button"
+                  onClick={() => setRePasswordVisible(!rePasswordVisible)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {rePasswordVisible ? (
+                    <EyeOffIcon className="w-5 h-5 cursor-pointer" />
+                  ) : (
+                    <EyeIcon className="w-5 h-5 cursor-pointer" />
+                  )}
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full text-white font-bold py-3 px-4 rounded-lg transition-colors cursor-pointer"
+                style={{
+                  backgroundColor: brandColor,
+                  hover: { backgroundColor: "#0a1f3d" },
+                }}
+              >
+                Create account
+              </button>
+            </form>
+          </main>
+
+          <footer className="mt-8 text-center text-sm text-gray-500">
+            <p>
+              By creating account you agree to our{" "}
+              <a
+                href="#"
+                className="font-semibold"
+                style={{ color: brandColor }}
+              >
+                Terms & Policies
+              </a>
+            </p>
+            <p className="mt-2">
+              Already have an account?{" "}
+              <Link
+                to={"/login"}
+                className="font-semibold"
+                style={{ color: brandColor }}
+              >
+                Log In
+              </Link>
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;
