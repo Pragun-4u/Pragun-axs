@@ -6,11 +6,29 @@ import {
   inputBaseClasses,
 } from "../constants/styleConstant";
 import signupImg from "/signup.jpg";
-
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+
+const loginSchema = yup.object().shape({
+  username: yup.string().required("Username is required"),
+  password: yup.string().required("Password is required"),
+});
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
+
+  const onSubmit = (data) => {
+    console.log("submitted", data);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
@@ -42,22 +60,29 @@ const Login = () => {
               Log in with your credentials
             </h2>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <div className="relative">
                   <input
-                    type={"text"}
+                    type="text"
                     placeholder="Username"
                     className={inputBaseClasses}
+                    {...register("username")}
                   />
+                  {errors.username && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.username.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="relative">
                 <input
-                  type={"password"}
+                  type={passwordVisible ? "text" : "password"}
                   placeholder="Enter password"
                   className={inputBaseClasses}
+                  {...register("password")}
                 />
                 <button
                   type="button"
@@ -70,6 +95,11 @@ const Login = () => {
                     <EyeIcon className="w-5 h-5 cursor-pointer" />
                   )}
                 </button>
+                {errors.password && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               <button

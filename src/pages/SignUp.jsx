@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
-import signupImg from "/signup.jpg";
+import { Link } from "react-router-dom";
 import {
   brandColor,
   inputBaseClasses,
@@ -10,10 +9,47 @@ import {
   InfoIcon,
   ChevronDownIcon,
 } from "../constants/styleConstant";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import signupImg from "/signup.jpg"; // adjust path
+
+const schema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  mobile: Yup.string()
+    .required("Mobile number is required")
+    .matches(/^\d{10}$/, "Must be 10 digits"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  nationality: Yup.string().required("Nationality is required"),
+  dob: Yup.string().required("Date of birth is required"),
+  gender: Yup.string().required("Gender is required"),
+  occupation: Yup.string().required("Occupation is required"),
+  experience: Yup.string().required("Experience is required"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(8, "Must be at least 8 characters")
+    .matches(/[A-Z]/, "Must contain uppercase letter")
+    .matches(/[0-9]/, "Must contain a number")
+    .matches(/[!@#$%^&*]/, "Must contain a special character"),
+  confirmPassword: Yup.string()
+    .required("Please confirm your password")
+    .oneOf([Yup.ref("password")], "Passwords must match"),
+});
 
 const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rePasswordVisible, setRePasswordVisible] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const onSubmit = (data) => {
+    console.log("Submitted Data:", data);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
@@ -45,33 +81,68 @@ const SignUp = () => {
               Sign up
             </h2>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-5 sm:space-y-0">
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  className={`${inputBaseClasses} sm:w-1/2`}
-                />
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  className={`${inputBaseClasses} sm:w-1/2`}
-                />
+                <div className="sm:w-1/2">
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    className={inputBaseClasses}
+                    {...register("firstName")}
+                  />
+                  {errors.firstName && (
+                    <p className="text-red-600 text-xs">
+                      {errors.firstName.message}
+                    </p>
+                  )}
+                </div>
+                <div className="sm:w-1/2">
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    className={inputBaseClasses}
+                    {...register("lastName")}
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-600 text-xs">
+                      {errors.lastName.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              <input
-                type="tel"
-                placeholder="Mobile Number"
-                className={inputBaseClasses}
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className={inputBaseClasses}
-              />
+              <div>
+                <input
+                  type="tel"
+                  placeholder="Mobile Number"
+                  className={inputBaseClasses}
+                  {...register("mobile")}
+                />
+                {errors.mobile && (
+                  <p className="text-red-600 text-xs">
+                    {errors.mobile.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className={inputBaseClasses}
+                  {...register("email")}
+                />
+                {errors.email && (
+                  <p className="text-red-600 text-xs">{errors.email.message}</p>
+                )}
+              </div>
 
               <div className="relative">
-                <select defaultValue="" className={selectClasses}>
+                <select
+                  {...register("nationality")}
+                  defaultValue=""
+                  className={selectClasses}
+                >
                   <option value="" disabled>
                     Nationality
                   </option>
@@ -81,18 +152,31 @@ const SignUp = () => {
                   <option value="india">India</option>
                 </select>
                 <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                {errors.nationality && (
+                  <p className="text-red-600 text-xs">
+                    {errors.nationality.message}
+                  </p>
+                )}
               </div>
 
-              <div className="relative">
+              <div>
                 <input
                   type="date"
                   placeholder="DD-MM-YYYY"
                   className={inputBaseClasses}
+                  {...register("dob")}
                 />
+                {errors.dob && (
+                  <p className="text-red-600 text-xs">{errors.dob.message}</p>
+                )}
               </div>
 
               <div className="relative">
-                <select defaultValue="" className={selectClasses}>
+                <select
+                  {...register("gender")}
+                  defaultValue=""
+                  className={selectClasses}
+                >
                   <option value="" disabled>
                     Gender
                   </option>
@@ -100,11 +184,20 @@ const SignUp = () => {
                   <option value="female">Female</option>
                   <option value="other">Other</option>
                 </select>
-                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none cursor-pointer" />
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                {errors.gender && (
+                  <p className="text-red-600 text-xs">
+                    {errors.gender.message}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
-                <select defaultValue="" className={selectClasses}>
+                <select
+                  {...register("occupation")}
+                  defaultValue=""
+                  className={selectClasses}
+                >
                   <option value="" disabled>
                     Please select occupation
                   </option>
@@ -112,11 +205,20 @@ const SignUp = () => {
                   <option value="des">Designer</option>
                   <option value="pm">Project Manager</option>
                 </select>
-                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none cursor-pointer" />
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                {errors.occupation && (
+                  <p className="text-red-600 text-xs">
+                    {errors.occupation.message}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
-                <select defaultValue="" className={selectClasses}>
+                <select
+                  {...register("experience")}
+                  defaultValue=""
+                  className={selectClasses}
+                >
                   <option value="" disabled>
                     Please select years of experience
                   </option>
@@ -124,13 +226,19 @@ const SignUp = () => {
                   <option value="3-5">3-5 Years</option>
                   <option value="5+">5+ Years</option>
                 </select>
-                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none cursor-pointer" />
+                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                {errors.experience && (
+                  <p className="text-red-600 text-xs">
+                    {errors.experience.message}
+                  </p>
+                )}
               </div>
 
               <input
                 type="url"
                 placeholder="Website (Optional)"
                 className={inputBaseClasses}
+                {...register("website")}
               />
 
               <div>
@@ -139,6 +247,7 @@ const SignUp = () => {
                     type={passwordVisible ? "text" : "password"}
                     placeholder="Password"
                     className={inputBaseClasses}
+                    {...register("password")}
                   />
                   <button
                     type="button"
@@ -160,6 +269,11 @@ const SignUp = () => {
                   Between 8 and 20 characters, 1 upper case letter, 1 or more
                   numbers, 1 or more special characters
                 </p>
+                {errors.password && (
+                  <p className="text-red-600 text-xs">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
@@ -167,6 +281,7 @@ const SignUp = () => {
                   type={rePasswordVisible ? "text" : "password"}
                   placeholder="Re-enter password"
                   className={inputBaseClasses}
+                  {...register("confirmPassword")}
                 />
                 <button
                   type="button"
@@ -179,6 +294,11 @@ const SignUp = () => {
                     <EyeIcon className="w-5 h-5 cursor-pointer" />
                   )}
                 </button>
+                {errors.confirmPassword && (
+                  <p className="text-red-600 text-xs">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
               </div>
 
               <button
