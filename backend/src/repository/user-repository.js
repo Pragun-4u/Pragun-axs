@@ -9,9 +9,9 @@ class UserRepository {
     }
   }
 
-  async getUser(email) {
+  async getUser(username) {
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ username });
       return user;
     } catch (error) {
       throw error;

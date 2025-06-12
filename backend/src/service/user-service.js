@@ -1,6 +1,6 @@
 import UserRepository from "../repository/user-repository.js";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 export default class UserService {
   constructor() {
     this.userRepository = new UserRepository();
@@ -8,11 +8,11 @@ export default class UserService {
 
   async signup(data) {
     try {
-      const { email, password } = data;
+      const { username, password } = data;
 
-      const exisitingUser = await this.userRepository.getUser(email);
+      const exisitingUser = await this.userRepository.getUser(username);
       if (exisitingUser) {
-        throw new Error("User already exists");
+        throw new Error("User already exists. Please log in.");
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,17 +25,17 @@ export default class UserService {
         expiresIn: "1d",
       });
 
-      return { user, token };
+      return { token };
     } catch (error) {
       throw error;
     }
   }
 
   async login(data) {
-    const { email, password } = data;
+    const { username, password } = data;
 
     try {
-      const user = await this.userRepository.getUser(email);
+      const user = await this.userRepository.getUser(username);
 
       if (!user) {
         throw new Error("User not found");
@@ -51,7 +51,12 @@ export default class UserService {
         expiresIn: "1d",
       });
 
-      return { user, token };
+      return {
+        user: {
+          userName: user?.firstName ?? "" + " " + user?.lastName ?? "",
+        },
+        token,
+      };
     } catch (error) {
       throw error;
     }

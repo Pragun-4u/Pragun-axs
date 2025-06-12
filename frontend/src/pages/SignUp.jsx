@@ -12,7 +12,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import signupImg from "/signup.jpg"; // adjust path
+import signupImg from "/signup.jpg";
 
 const schema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -20,7 +20,9 @@ const schema = Yup.object().shape({
   mobile: Yup.string()
     .required("Mobile number is required")
     .matches(/^\d{10}$/, "Must be 10 digits"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  username: Yup.string()
+    .email("Invalid username")
+    .required("Username is required"),
   nationality: Yup.string().required("Nationality is required"),
   dob: Yup.string().required("Date of birth is required"),
   gender: Yup.string().required("Gender is required"),
@@ -128,12 +130,14 @@ const SignUp = () => {
               <div>
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Username"
                   className={inputBaseClasses}
-                  {...register("email")}
+                  {...register("username")}
                 />
-                {errors.email && (
-                  <p className="text-red-600 text-xs">{errors.email.message}</p>
+                {errors.username && (
+                  <p className="text-red-600 text-xs">
+                    {errors.username.message}
+                  </p>
                 )}
               </div>
 
