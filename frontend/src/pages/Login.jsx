@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import httpClient from "../api/httpClient.js";
 import useToast from "../components/Toast.jsx";
+import { useAuth } from "../context/AuthContext";
 const loginSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
   password: yup
@@ -24,6 +25,7 @@ const loginSchema = yup.object().shape({
 
 const Login = () => {
   const { showToast } = useToast();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const {
@@ -38,7 +40,7 @@ const Login = () => {
     try {
       const res = await httpClient.post("/login", data);
 
-      localStorage.setItem("token", res?.response?.token);
+      login(res?.response?.token);
       localStorage.setItem("user", res?.response?.user?.userName);
       showToast("success", "Logged in successfully");
       setTimeout(() => navigate("/"), 1000);

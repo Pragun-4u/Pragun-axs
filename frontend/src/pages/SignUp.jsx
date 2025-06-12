@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import signupImg from "/signup.jpg";
 import useToast from "../components/Toast";
 import httpClient from "../api/httpClient";
-
+import { useAuth } from "../context/AuthContext";
 const schema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
@@ -43,6 +43,7 @@ const schema = Yup.object().shape({
 
 const SignUp = () => {
   const { showToast } = useToast();
+  const { login } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rePasswordVisible, setRePasswordVisible] = useState(false);
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const SignUp = () => {
     try {
       const res = await httpClient.post("/signup", data);
 
-      localStorage.setItem("token", res?.response?.token);
+      login(res?.response?.token);
       localStorage.setItem("user", res?.response?.user?.userName);
       showToast("success", "Signed up successfully");
       setTimeout(() => {
