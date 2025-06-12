@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   brandColor,
   inputBaseClasses,
@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import signupImg from "/signup.jpg";
+import useToast from "../components/Toast";
+import httpClient from "../api/httpClient";
 
 const schema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -40,17 +42,31 @@ const schema = Yup.object().shape({
 });
 
 const SignUp = () => {
+  const { showToast } = useToast();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rePasswordVisible, setRePasswordVisible] = useState(false);
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
 
-  const onSubmit = (data) => {
-    console.log("Submitted Data:", data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await httpClient.post("/signup", data);
+
+      localStorage.setItem("token", res?.response?.token);
+      localStorage.setItem("user", res?.response?.user?.userName);
+      showToast("success", "Signed up successfully");
+      setTimeout(() => {
+        navigate("/");
+        showToast("success", "Logged in successfully");
+      }, 1000);
+    } catch (error) {
+      console.log({ error });
+      showToast("error", error?.message);
+    }
   };
 
   return (
@@ -115,7 +131,7 @@ const SignUp = () => {
 
               <div>
                 <input
-                  type="tel"
+                  type="number"
                   placeholder="Mobile Number"
                   className={inputBaseClasses}
                   {...register("mobile")}

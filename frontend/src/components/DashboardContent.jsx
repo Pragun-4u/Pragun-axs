@@ -57,11 +57,12 @@ const MiniChartIcon = (props) => (
 );
 
 const DashboardContent = () => {
+  const userName = localStorage.getItem("user");
   return (
     <div className="flex-1 p-8">
       <div className="flex justify-between items-center mb-10">
         <div>
-          <p className="text-gray-500 text-sm">Hi Andrei,</p>
+          <p className="text-gray-500 text-sm">Hi {userName ?? ""},</p>
           <h1 className="text-4xl font-bold text-slate-800">
             Welcome to Venus!
           </h1>

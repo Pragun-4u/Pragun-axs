@@ -8,15 +8,23 @@ import {
 import signupImg from "/signup.jpg";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-
+import httpClient from "../api/httpClient.js";
+import useToast from "../components/Toast.jsx";
 const loginSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
-  password: yup.string().required("Password is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .matches(/[A-Z]/, "Must contain uppercase letter")
+    .matches(/[0-9]/, "Must contain a number")
+    .matches(/[!@#$%^&*]/, "Must contain a special character"),
 });
 
 const Login = () => {
+  const { showToast } = useToast();
+  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const {
     handleSubmit,
@@ -26,8 +34,18 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("submitted", data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await httpClient.post("/login", data);
+
+      localStorage.setItem("token", res?.response?.token);
+      localStorage.setItem("user", res?.response?.user?.userName);
+      showToast("success", "Logged in successfully");
+      setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      console.log({ error });
+      showToast("error", error?.message);
+    }
   };
 
   return (

@@ -9,6 +9,8 @@ import {
   SettingsIcon,
   DashboardIcon,
 } from "../constants/styleConstant";
+import { useNavigate } from "react-router";
+import useToast from "./Toast";
 
 const SidebarItem = ({ icon, text, active, onClick }) => {
   return (
@@ -35,6 +37,8 @@ const SidebarItem = ({ icon, text, active, onClick }) => {
 };
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   const navItems = [
@@ -72,6 +76,23 @@ const Sidebar = () => {
             to get access to all features!
           </p>
         </div>
+      </div>
+
+      {/* logout btn */}
+
+      <div className="px-4 pb-2">
+        <button
+          className="w-full cursor-pointer"
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/login");
+            showToast("success", "Logged out successfully");
+          }}
+        >
+          <div className="p-4 rounded-lg bg-red-600/70 text-white text-center">
+            <p className="font-semibold text-sm">Logout</p>
+          </div>
+        </button>
       </div>
     </aside>
   );
