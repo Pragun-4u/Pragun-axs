@@ -130,7 +130,7 @@ const Login = () => {
                   hover: { backgroundColor: "#0a1f3d" },
                 }}
               >
-                Create account
+                Log In
               </button>
             </form>
           </main>
