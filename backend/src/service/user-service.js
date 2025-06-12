@@ -25,7 +25,12 @@ export default class UserService {
         expiresIn: "1d",
       });
 
-      return { token };
+      return {
+        user: {
+          userName: user?.firstName ?? "" + " " + user?.lastName ?? "",
+        },
+        token,
+      };
     } catch (error) {
       throw error;
     }
@@ -38,7 +43,7 @@ export default class UserService {
       const user = await this.userRepository.getUser(username);
 
       if (!user) {
-        throw new Error("User not found");
+        throw new Error("User not found. Try signing up.");
       }
 
       const isPasswordMatch = await bcrypt.compare(password, user.password);
