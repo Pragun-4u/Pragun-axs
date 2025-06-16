@@ -12,6 +12,7 @@ const router = createBrowserRouter([
   { path: "/signup", element: <SignUp /> },
   {
     path: "/",
+    errorElement: <NotFoundPage />,
     element: (
       <ProtectedRoute>
         <Home />
